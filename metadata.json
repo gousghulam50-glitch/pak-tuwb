@@ -1,0 +1,8 @@
+{
+  "name": "Remix PakTube",
+  "description": "PakTube - Urdu RTL Android video sharing platform with channels, Shorts, social interactions, and admin moderation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

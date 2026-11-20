@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">PakTube</string>
+    <string name="paktube_brand">PakTube</string>
+    <string name="splash_title" translatable="false">PakToYou</string>
+
+    <!-- Bottom Nav Tabs -->
+    <string name="nav_home">ہوم</string>
+    <string name="nav_shorts">شارٹس</string>
+    <string name="nav_create">بنائیں</string>
+    <string name="nav_subscriptions">سبسکرپشنز</string>
+    <string name="nav_profile">آپ</string>
+
+    <!-- Auth -->
+    <string name="sign_in_google">گوگل اکاؤنٹ منتخب کریں</string>
+    <string name="switch_google_account">اکاؤنٹ تبدیل کریں</string>
+    <string name="sign_out">لاگ آؤٹ</string>
+
+    <!-- Home & Chips -->
+    <string name="chip_all">سب</string>
+    <string name="chip_shorts">شارٹس</string>
+    <string name="chip_posts">پوسٹس</string>
+    <string name="chip_subscriptions">سبسکرپشنز</string>
+    <string name="create_channel_btn">اپنا چینل بنائیں</string>
+    <string name="your_studio_btn">آپ کا اسٹوڈیو</string>
+    <string name="shorts_title">شارٹس</string>
+    <string name="recommended_videos">تجویز کردہ ویڈیوز</string>
+    <string name="recent_videos">تازہ ترین ویڈیوز</string>
+    <string name="popular_videos">مقبول ویڈیوز</string>
+    <string name="subscribed_channels">سبسکرائب کردہ چینلز</string>
+
+    <!-- Actions & Labels -->
+    <string name="search_hint">ویڈیوز، شارٹس، چینلز تلاش کریں…</string>
+    <string name="notifications_title">اطلاعات</string>
+    <string name="subscribe">سبسکرائب کریں</string>
+    <string name="subscribed">سبسکرائبڈ</string>
+    <string name="like">پسند</string>
+    <string name="dislike">ناپسند</string>
+    <string name="comments">تبصرے</string>
+    <string name="share">شیئر</string>
+    <string name="save">محفوظ</string>
+    <string name="saved">محفوظ شدہ</string>
+    <string name="report">رپورٹ</string>
+    <string name="admin_dashboard">ایڈمن ڈیش بورڈ</string>
+</resources>

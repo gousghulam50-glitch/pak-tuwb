@@ -1,0 +1,251 @@
+{
+  "entities": {
+    "AdminRole": {
+      "title": "AdminRole",
+      "description": "Authorized platform administrator record.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID of the administrator." },
+        "email": { "type": "string", "description": "Administrator email address." },
+        "grantedBy": { "type": "string", "description": "UID or system that granted admin role." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp when granted." }
+      },
+      "required": ["userId", "email", "grantedBy", "createdAt"]
+    },
+    "PlatformConfig": {
+      "title": "PlatformConfig",
+      "description": "Admin-configurable platform limits such as maximum video durations.",
+      "type": "object",
+      "properties": {
+        "maxShortDurationSeconds": { "type": "integer", "description": "Maximum allowed duration for Shorts in seconds." },
+        "maxNormalDurationSeconds": { "type": "integer", "description": "Maximum allowed duration for normal videos in seconds." },
+        "maxUploadSizeMb": { "type": "integer", "description": "Maximum upload file size in megabytes." },
+        "updatedBy": { "type": "string", "description": "Admin UID who updated the config." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp of update." }
+      },
+      "required": ["maxShortDurationSeconds", "maxNormalDurationSeconds", "maxUploadSizeMb", "updatedBy", "updatedAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private user account record including email and moderation suspension state.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID." },
+        "displayName": { "type": "string", "description": "User display name." },
+        "email": { "type": "string", "description": "Google account email (PII, owner/admin only)." },
+        "photoUrl": { "type": "string", "description": "Profile picture URL or base64 data URI." },
+        "suspendedFlag": { "type": "boolean", "description": "Whether the account is suspended by admin." },
+        "suspendedReason": { "type": "string", "description": "Reason for suspension if suspended." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "displayName", "email", "suspendedFlag", "createdAt", "updatedAt"]
+    },
+    "Channel": {
+      "title": "Channel",
+      "description": "Creator channel visible across PakTube.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "description": "Owner Firebase Auth UID." },
+        "name": { "type": "string", "description": "Channel display name." },
+        "handle": { "type": "string", "description": "Channel handle." },
+        "description": { "type": "string", "description": "Channel bio/description." },
+        "avatarData": { "type": "string", "description": "Channel avatar URL or compressed JPEG data URI." },
+        "subscriberCount": { "type": "integer", "description": "Total subscribers." },
+        "videoCount": { "type": "integer", "description": "Total uploaded videos." },
+        "activeFlag": { "type": "boolean", "description": "Whether the channel is active and discoverable." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["ownerId", "name", "handle", "description", "subscriberCount", "videoCount", "activeFlag", "createdAt", "updatedAt"]
+    },
+    "Subscription": {
+      "title": "Subscription",
+      "description": "Subscriber-to-channel link with deterministic ID subscriberId_channelId.",
+      "type": "object",
+      "properties": {
+        "subscriberId": { "type": "string", "description": "Subscriber UID." },
+        "channelId": { "type": "string", "description": "Subscribed channel ID." },
+        "channelName": { "type": "string", "description": "Channel name snapshot." },
+        "channelAvatar": { "type": "string", "description": "Channel avatar snapshot." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["subscriberId", "channelId", "channelName", "createdAt"]
+    },
+    "Video": {
+      "title": "Video",
+      "description": "Normal or Short video metadata stored in Firestore.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "description": "Uploader UID." },
+        "channelId": { "type": "string", "description": "Channel ID." },
+        "channelName": { "type": "string", "description": "Channel display name." },
+        "channelAvatar": { "type": "string", "description": "Channel avatar URL/data." },
+        "title": { "type": "string", "description": "Video title." },
+        "description": { "type": "string", "description": "Video description." },
+        "category": { "type": "string", "description": "Video category." },
+        "shortFlag": { "type": "boolean", "description": "True for 9:16 Short videos, false for normal videos." },
+        "durationSeconds": { "type": "integer", "description": "Video duration in seconds." },
+        "storageType": { "type": "string", "enum": ["CHUNKED", "URL"], "description": "Whether video bytes are stored in chunks subcollection or remote URL." },
+        "chunkCount": { "type": "integer", "description": "Number of binary chunks if storageType is CHUNKED." },
+        "videoUrl": { "type": "string", "description": "Optional remote MP4/HLS URL when storageType is URL." },
+        "thumbnailData": { "type": "string", "description": "Compressed JPEG data URI or HTTPS thumbnail URL." },
+        "viewCount": { "type": "integer", "description": "Total views." },
+        "likeCount": { "type": "integer", "description": "Total likes." },
+        "dislikeCount": { "type": "integer", "description": "Total dislikes." },
+        "commentCount": { "type": "integer", "description": "Total comments." },
+        "status": { "type": "string", "enum": ["ACTIVE", "REMOVED"], "description": "Moderation status." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server upload timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["ownerId", "channelId", "channelName", "title", "description", "category", "shortFlag", "durationSeconds", "storageType", "chunkCount", "viewCount", "likeCount", "dislikeCount", "commentCount", "status", "createdAt", "updatedAt"]
+    },
+    "VideoChunk": {
+      "title": "VideoChunk",
+      "description": "Binary video chunk persisted in Firestore for cross-device video playback.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "description": "Uploader UID." },
+        "index": { "type": "integer", "description": "Zero-based chunk order index." },
+        "data": { "type": "string", "format": "byte", "description": "Binary video bytes." }
+      },
+      "required": ["ownerId", "index", "data"]
+    },
+    "VideoReaction": {
+      "title": "VideoReaction",
+      "description": "Single active like or dislike reaction per user per video.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Reacting user UID." },
+        "reactionType": { "type": "string", "enum": ["LIKE", "DISLIKE"], "description": "Active reaction." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["userId", "reactionType", "updatedAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Comment or reply on a video.",
+      "type": "object",
+      "properties": {
+        "videoId": { "type": "string", "description": "Parent video ID." },
+        "authorId": { "type": "string", "description": "Commenter UID." },
+        "authorName": { "type": "string", "description": "Commenter display name." },
+        "authorAvatar": { "type": "string", "description": "Commenter avatar URL/data." },
+        "parentCommentId": { "type": "string", "description": "Empty for top-level comments, or parent comment ID for replies." },
+        "text": { "type": "string", "description": "Comment body." },
+        "likeCount": { "type": "integer", "description": "Likes on comment." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["videoId", "authorId", "authorName", "parentCommentId", "text", "likeCount", "createdAt", "updatedAt"]
+    },
+    "UserVideoEntry": {
+      "title": "UserVideoEntry",
+      "description": "User-scoped watch history, saved video, or liked video bookmark.",
+      "type": "object",
+      "properties": {
+        "videoId": { "type": "string", "description": "Referenced video ID." },
+        "title": { "type": "string", "description": "Video title snapshot." },
+        "thumbnailData": { "type": "string", "description": "Thumbnail snapshot." },
+        "channelId": { "type": "string", "description": "Channel ID." },
+        "channelName": { "type": "string", "description": "Channel name snapshot." },
+        "shortFlag": { "type": "boolean", "description": "Whether Short video." },
+        "durationSeconds": { "type": "integer", "description": "Duration in seconds." },
+        "recordedAt": { "type": "string", "format": "date-time", "description": "Server timestamp." }
+      },
+      "required": ["videoId", "title", "channelId", "channelName", "shortFlag", "durationSeconds", "recordedAt"]
+    },
+    "NotificationItem": {
+      "title": "NotificationItem",
+      "description": "User notification item.",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string", "description": "Recipient UID." },
+        "senderId": { "type": "string", "description": "Triggering actor UID." },
+        "senderName": { "type": "string", "description": "Actor display name." },
+        "type": { "type": "string", "enum": ["NEW_VIDEO", "COMMENT", "REPLY", "LIKE", "SUBSCRIBE", "ADMIN_NOTICE"], "description": "Notification type." },
+        "title": { "type": "string", "description": "Notification title." },
+        "message": { "type": "string", "description": "Notification message." },
+        "videoId": { "type": "string", "description": "Optional related video ID." },
+        "readFlag": { "type": "boolean", "description": "Whether read by recipient." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." }
+      },
+      "required": ["recipientId", "senderId", "senderName", "type", "title", "message", "readFlag", "createdAt"]
+    },
+    "ContentReport": {
+      "title": "ContentReport",
+      "description": "User-submitted moderation report.",
+      "type": "object",
+      "properties": {
+        "reporterId": { "type": "string", "description": "Reporting user UID." },
+        "targetType": { "type": "string", "enum": ["VIDEO", "COMMENT", "CHANNEL"], "description": "Reported entity type." },
+        "targetId": { "type": "string", "description": "Reported entity ID." },
+        "targetTitle": { "type": "string", "description": "Human-readable target summary." },
+        "reason": { "type": "string", "description": "Report category/reason." },
+        "details": { "type": "string", "description": "Optional additional context." },
+        "status": { "type": "string", "enum": ["PENDING", "RESOLVED", "DISMISSED"], "description": "Moderation status." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["reporterId", "targetType", "targetId", "targetTitle", "reason", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/AdminRole" },
+      "description": "Authorized platform administrators."
+    },
+    "/platform_config/{configId}": {
+      "schema": { "$ref": "#/entities/PlatformConfig" },
+      "description": "Platform configuration settings (e.g., settings)."
+    },
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Private user account profiles."
+    },
+    "/users/{userId}/watchHistory/{videoId}": {
+      "schema": { "$ref": "#/entities/UserVideoEntry" },
+      "description": "User watch history entries."
+    },
+    "/users/{userId}/savedVideos/{videoId}": {
+      "schema": { "$ref": "#/entities/UserVideoEntry" },
+      "description": "User saved videos."
+    },
+    "/users/{userId}/likedVideos/{videoId}": {
+      "schema": { "$ref": "#/entities/UserVideoEntry" },
+      "description": "User liked videos index."
+    },
+    "/users/{userId}/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/NotificationItem" },
+      "description": "User notifications."
+    },
+    "/channels/{channelId}": {
+      "schema": { "$ref": "#/entities/Channel" },
+      "description": "Public creator channels."
+    },
+    "/subscriptions/{subId}": {
+      "schema": { "$ref": "#/entities/Subscription" },
+      "description": "User channel subscriptions."
+    },
+    "/videos/{videoId}": {
+      "schema": { "$ref": "#/entities/Video" },
+      "description": "Uploaded normal and short videos."
+    },
+    "/videos/{videoId}/chunks/{chunkId}": {
+      "schema": { "$ref": "#/entities/VideoChunk" },
+      "description": "Persistent binary chunks for uploaded videos."
+    },
+    "/videos/{videoId}/reactions/{userId}": {
+      "schema": { "$ref": "#/entities/VideoReaction" },
+      "description": "Single active like or dislike per user per video."
+    },
+    "/videos/{videoId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/Comment" },
+      "description": "Comments and replies on a video."
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/ContentReport" },
+      "description": "Content moderation reports."
+    }
+  }
+}
